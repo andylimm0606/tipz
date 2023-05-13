@@ -4,10 +4,14 @@ const axios = require('axios')
 const mongoose = require("mongoose")
 const Message = require("./models/Message")
 const port = 8000
+const messageServ = require('./models/Message-serv');
+const cors = require('cors');
 
+
+app.use(cors());
 app.use(express.json())
 
-require('dotenv').config();
+
 
 const mongoURI = "mongodb+srv://user2:aZOW45E2IqH0ZqsB@cluster0.tyiyisl.mongodb.net/"
 
@@ -85,7 +89,14 @@ app.get("/random_tip", async (req, res) => {
         res.status(500).json({ error: "Something went wrong" })
     }
 })
-  
+
+app.post("/message", async (req, res) => {
+    const msg = req.body;
+    const savedMsg = await messageServ.addMessage(msg);
+    if (savedMsg) res.status(201).send(savedMsg);
+    else res.status(500).end();
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
