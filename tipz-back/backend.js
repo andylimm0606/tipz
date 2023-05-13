@@ -6,12 +6,10 @@ const port = 8000
 
 app.use(express.json())
 
-const mongoURI =
-    "mongodb+srv://user2:aZOW45E2IqH0ZqsB@cluster0.tyiyisl.mongodb.net/"
+const mongoURI = "mongodb+srv://user2:aZOW45E2IqH0ZqsB@cluster0.tyiyisl.mongodb.net/"
 
-// Connect to MongoDB
-mongoose
-    .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Connected to MongoDB")
     })
@@ -22,10 +20,11 @@ mongoose
 app.get("/", (req, res) => {
     res.send("Hello World!")
 })
+
 app.get("/add_message", async (req, res) => {
     try {
         // const { username, message } = req.body; // edit this later to grab info from request body
-        const username = "j2joe34"
+        const username = "bob"
         const message = "This is a test message with new"
 
         const new_message = new Message({ username, message })
@@ -33,9 +32,24 @@ app.get("/add_message", async (req, res) => {
         await new_message.save()
 
         res.status(201).json({ message: "Data saved successfully" })
+
     } catch (error) {
         console.error("Error saving data:", error)
         res.status(500).json({ message: "An error occurred while saving data" })
+    }
+})
+
+app.get("/get_all_messages", async (req, res) => {
+    try {
+		
+		const message = await Message.find().sort({ _id: -1 }) // sort by most recently added
+        res.status(200).json(message)
+
+    } catch (error) {
+        console.error("Error retrieving messages:", error)
+        res.status(500).json({
+            message: "An error occurred while retrieving messages",
+        })
     }
 })
 
