@@ -4,6 +4,7 @@ const axios = require('axios')
 const mongoose = require("mongoose")
 const Message = require("./models/Message")
 const port = 8000
+const rateTip = require("./Utils/rateTip")
 
 app.use(express.json())
 
@@ -85,6 +86,14 @@ app.get("/random_tip", async (req, res) => {
         res.status(500).json({ error: "Something went wrong" })
     }
 })
+
+// For testing - rate user response function won't be called explicitly by the user, only by another backend route
+app.get("/test_route", async (req, res) => {
+	const response = await rateTip("Carpool with others") // Replace hard coded string with user input later 
+	console.log(response)
+	res.json({ response })
+})
+
   
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
