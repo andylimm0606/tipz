@@ -3,6 +3,7 @@ const app = express()
 const axios = require('axios')
 const mongoose = require("mongoose")
 const Message = require("./models/Message")
+const MessageV2 = require("./models/MessageV2")
 const port = 8000
 const rateTip = require("./Utils/rateTip")
 
@@ -32,6 +33,32 @@ app.get("/add_message", async (req, res) => {
         const message = "This is a test message with new"
 
         const new_message = new Message({ username, message })
+
+        await new_message.save()
+
+        res.status(201).json({ message: "Data saved successfully" })
+
+    } catch (error) {
+        console.error("Error saving data:", error)
+        res.status(500).json({ message: "An error occurred while saving data" })
+    }
+})
+
+app.get("/add_messageV2", async (req, res) => {
+    try {
+		const message = req.body.message
+		
+		const responseJSON = await rateTip(message)
+		console.log(responseJSON)
+		const rating = responseJSON.rating
+		const explanation = responseJSON.explanation
+
+        const new_message = new MessageV2({
+            ai_written: false,
+            message: message,
+            rating: rating,
+            explanation: explanation,
+        })
 
         await new_message.save()
 

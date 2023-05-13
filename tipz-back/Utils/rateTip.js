@@ -3,7 +3,7 @@ require('dotenv').config();
 
 async function rateTip(user_tip){
 	console.log(`The user tip is ${user_tip}`);
-	const message = `Rate the following tip in terms of helping sustainability. Requirements: Your rating must be from 1 - 5, 1 being worst and 5 being best. You must not give a response outside of this range. Your response should be in JSON format, with the key being "rating" and "explanation", with the values being your rating and explanation respectively. Your explanation should not exceed one sentence. You should not include additional commentary before or after the json formatted response. The tip: ${user_tip}`
+	const message = `Rate the following tip in terms of helping sustainability. Requirements: Your rating must be from 1 - 5, 1 being worst and 5 being best. You must not give a response outside of this range. Your response should be in JSON format, with the key being "rating" and "explanation", with the values being your rating and explanation respectively. Your explanation should not exceed one sentence. You should not include additional commentary before or after the json formatted response. Example JSON response: { rating: 1, explanation: 'Does not directly contribute to sustainability efforts.' } The tip: ${user_tip}` 
 	try {
         const response = await axios.post(
             "https://api.openai.com/v1/chat/completions",
