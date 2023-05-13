@@ -2,12 +2,14 @@ const express = require("express")
 const app = express()
 const axios = require('axios')
 const mongoose = require("mongoose")
+const cors = require('cors');
 const Message = require("./models/Message")
 const MessageV2 = require("./models/MessageV2")
 const port = 8000
 const rateTip = require("./Utils/rateTip")
 
 app.use(express.json())
+app.use(cors());
 
 require('dotenv').config();
 
@@ -25,23 +27,24 @@ app.get("/", (req, res) => {
     res.send("Hello World!")
 })
 
-app.get("/add_message", async (req, res) => {
-    try {
-        // const { username, message } = req.body; // edit this later to grab info from request body
-        const username = "bob"
-        const message = "This is a test message with new"
+// Old add message route 
+// app.get("/add_message", async (req, res) => {
+//     try {
+//         // const { username, message } = req.body; // edit this later to grab info from request body
+//         const username = "bob"
+//         const message = "This is a test message with new"
 
-        const new_message = new Message({ username, message })
+//         const new_message = new Message({ username, message })
 
-        await new_message.save()
+//         await new_message.save()
 
-        res.status(201).json({ message: "Data saved successfully" })
+//         res.status(201).json({ message: "Data saved successfully" })
 
-    } catch (error) {
-        console.error("Error saving data:", error)
-        res.status(500).json({ message: "An error occurred while saving data" })
-    }
-})
+//     } catch (error) {
+//         console.error("Error saving data:", error)
+//         res.status(500).json({ message: "An error occurred while saving data" })
+//     }
+// })
 
 app.get("/add_messageV2", async (req, res) => {
     try {
