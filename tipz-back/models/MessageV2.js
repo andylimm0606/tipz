@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
     message: String,
     rating: String,
     explanation: String,
-})
+}, {collection: "messagev2"})
 
 const MessageV2 = mongoose.model("MessageV2", messageSchema)
 
