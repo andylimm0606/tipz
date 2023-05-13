@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const User = require('./models/Message'); 
+const Message = require('./models/Message'); 
 const port = 8000;
 
 app.use(express.json());
@@ -21,15 +21,15 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-app.get('/test_write', async (req, res) => {
+app.get('/add_message', async (req, res) => {
     try {
 		// const { username, message } = req.body; // edit this later to grab info from request body
-		const username = '2joe'
+		const username = 'j2joe34'
 		const message = 'This is a test message with new'
 		
-		const user = new User({ username, message });
+		const new_message = new Message({ username, message });
 	
-		await user.save();
+		await new_message.save();
 	
 		res.status(201).json({ message: 'Data saved successfully' });
 	  } catch (error) {
