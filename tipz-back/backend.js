@@ -7,6 +7,7 @@ const Message = require("./models/Message")
 const MessageV2 = require("./models/MessageV2")
 const port = 8000
 const rateTip = require("./Utils/rateTip")
+const messageServ = require('./models/Message-serv');
 
 app.use(express.json())
 app.use(cors());
@@ -46,9 +47,10 @@ app.get("/", (req, res) => {
 //     }
 // })
 
-app.get("/add_messageV2", async (req, res) => {
+app.post("/add_messageV2", async (req, res) => {
     try {
 		const message = req.body.message
+        
 		
 		const responseJSON = await rateTip(message)
 		const rating = responseJSON.rating
@@ -122,6 +124,12 @@ app.get("/test_route", async (req, res) => {
 	res.json({ response })
 })
 
+app.post("/message", async (req, res) => {
+    const msg = req.body;
+    const savedMsg = await messageServ.addMessage(msg);
+    if (savedMsg) res.status(201).send(savedMsg);
+    else res.status(500).end();
+})
   
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
